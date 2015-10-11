@@ -1,0 +1,44 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {
+            "config.xml": {
+                "parents": {
+                    "/*": [
+                        {
+                            "xml": "<feature name=\"BarcodeScanner\"><param name=\"browser-package\" value=\"BarcodeScanner\" /></feature>",
+                            "count": 1
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "installed_plugins": {
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "com.classdiary.checkin"
+        },
+        "org.apache.cordova.dialogs": {
+            "PACKAGE_NAME": "com.classdiary.checkin"
+        },
+        "org.apache.cordova.inappbrowser": {
+            "PACKAGE_NAME": "com.classdiary.checkin"
+        },
+        "phonegap-plugin-barcodescanner": {
+            "PACKAGE_NAME": "com.classdiary.checkin"
+        },
+        "cordova-plugin-console": {
+            "PACKAGE_NAME": "com.classdiary.checkin"
+        },
+        "cordova-plugin-geolocation": {
+            "PACKAGE_NAME": "com.classdiary.checkin"
+        },
+        "cordova-plugin-network-information": {
+            "PACKAGE_NAME": "com.classdiary.checkin"
+        }
+    },
+    "dependent_plugins": {}
+}

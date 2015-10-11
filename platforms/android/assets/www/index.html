@@ -1,117 +1,62 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta charset="UTF-8">
         <!--
-        Instalação: https://www.youtube.com/watch?v=U12pqIxwuYE
-        Exemplo da Aplicação: http://www.sitepoint.com/scanning-qr-code-cordova/
-        Documentação Cordova: http://cordova.apache.org/docs/en/5.1.1/guide/cli/index.html
+        InstalaÃ§Ã£o: https://www.youtube.com/watch?v=U12pqIxwuYE
+        Exemplo da AplicaÃ§Ã£o: http://www.sitepoint.com/scanning-qr-code-cordova/
+        DocumentaÃ§Ã£o Cordova: http://cordova.apache.org/docs/en/5.1.1/guide/cli/index.html
         -->
-        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
+        <!--meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *"-->
         <meta name="format-detection" content="telephone=no">
         <meta name="msapplication-tap-highlight" content="no">
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
         <link rel="stylesheet" type="text/css" href="css/index.css">
-        <title>ClassDiary :: Registro de Presença</title>
+        <title>ClassDiary :: Registro de PresenÃ§a</title>
     </head>
     <body>
+        <div id="app">
+            <div data-role="page" id="home">
+                <div data-role="header">
+                    <h1>ClassDiary :: Registro de PresenÃ§a</h1>
+                </div>
 
-        <div data-role="page" id="home">
-            <div data-role="header">
-                <h1>ClassDiary :: Registro de Presença</h1>
-            </div>
-
-            <div data-role="main" class="ui-content">
-                <p>
-                    <a target="_blank" href="javascript:scan();" style="text-decoration: none"><button>Registrar Presença</button></a>
-                    <a target="_blank" href="#display" style="text-decoration: none"><button>Mostrar dados Escaneados</button></a>
-                </p>
-            </div>
-        </div>
-
-        <div data-role="page" id="display">
-            <div data-role="header">
-                <a target="_blank" href="#home" class="ui-btn ui-icon-home ui-btn-icon-left">Home</a>
-                <h1>Display</h1>
-            </div>
-
-            <div data-role="main" class="ui-content">
-                <table data-role="table" data-mode="column" id="allTable" class="ui-responsive table-stroke">
-                    <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Value</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
+                <div data-role="main" class="ui-content">
+                    <p>
+                        <a target="_blank" href="javascript:scan();" style="text-decoration: none"><button>Registrar PresenÃ§a</button></a>
+                    </p>
+                </div>
             </div>
         </div>
+
+        <div class="clearfix"></div>
+
+        <div id="map"></div>
 
         <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
         <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkXpngIl57IBJUUwyOakf4_JrWAUJftrA"></script>
         <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/check_connection.js"></script>
+        <script type="text/javascript" src="js/google_maps.js"></script>
+        <script type="text/javascript" src="js/qrcode_scan.js"></script>
         <script>
-            function scan()
-            {
-                cordova.plugins.barcodeScanner.scan(
-                    function (result) {
-                        if(!result.cancelled)
-                        {
-                            if(result.format == "QR_CODE")
-                            {
-                                navigator.notification.prompt("Deseja confirmar sua Presença?",  function(input){
-                                    var name = input.input1;
-                                    var value = result.text;
 
-                                    var data = localStorage.getItem("LocalData");
-                                    console.log(data);
-                                    data = JSON.parse(data);
-                                    data[data.length] = [name, value];
+            document.addEventListener("deviceready", function(){
+                connection = checkConnection();
+                //alert(connection)
 
-                                    localStorage.setItem("LocalData", JSON.stringify(data));
-
-                                    alert("Presença registrada com sucesso!");
-                                });
-                            }
-                        }
-                    },
-                    function (error) {
-                        alert("Scanning failed: " + error);
-                    }
-               );
-            }
-
-            $(document).on("pagebeforeshow", "#display", function() {
-                $("table#allTable tbody").empty();
-
-                var data = localStorage.getItem("LocalData");
-                console.log(data);
-                data = JSON.parse(data);
-
-                var html = "";
-
-                for(var count = 0; count < data.length; count++)
-                {
-                    html = html + "<tr><td>" + data[count][0] + "</td><td><a href='javascript:openURL(\"" + data[count][1] + "\")'>" + data[count][1] + "</a></td></tr>";
+                if(connection == 'UNKNOWN' || connection == 'NONE') {
+                    alert('Ops...VocÃª nÃ£o esta conectado!')
                 }
+                else {
+                    //inicializa google maps
+                    app.initialize();
 
-                $("table#allTable tbody").append(html).closest("table#allTable").table("refresh").trigger("create");
-
+                    //inicializa scan
+                    scan();
+                }
             });
-
-            function openURL(url)
-            {
-                window.open(url, '_blank', 'location=yes');
-            }
-
-            //initialize
-            if(localStorage.getItem("LocalData") == null)
-            {
-                var data = [];
-                data = JSON.stringify(data);
-                localStorage.setItem("LocalData", data);
-            }
         </script>
     </body>
 </html>

@@ -32,6 +32,35 @@ module.exports = [
         "clobbers": [
             "cordova.plugins.barcodeScanner"
         ]
+    },
+    {
+        "file": "plugins/cordova-plugin-console/www/logger.js",
+        "id": "cordova-plugin-console.logger",
+        "clobbers": [
+            "cordova.logger"
+        ]
+    },
+    {
+        "file": "plugins/cordova-plugin-console/www/console-via-logger.js",
+        "id": "cordova-plugin-console.console",
+        "clobbers": [
+            "console"
+        ]
+    },
+    {
+        "file": "plugins/cordova-plugin-network-information/www/network.js",
+        "id": "cordova-plugin-network-information.network",
+        "clobbers": [
+            "navigator.connection",
+            "navigator.network.connection"
+        ]
+    },
+    {
+        "file": "plugins/cordova-plugin-network-information/www/Connection.js",
+        "id": "cordova-plugin-network-information.Connection",
+        "clobbers": [
+            "Connection"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -40,7 +69,10 @@ module.exports.metadata =
     "cordova-plugin-whitelist": "1.0.0",
     "org.apache.cordova.dialogs": "0.3.0",
     "org.apache.cordova.inappbrowser": "0.6.0",
-    "phonegap-plugin-barcodescanner": "4.0.2"
+    "phonegap-plugin-barcodescanner": "4.0.2",
+    "cordova-plugin-console": "1.0.1",
+    "cordova-plugin-geolocation": "1.0.1",
+    "cordova-plugin-network-information": "1.0.1"
 }
 // BOTTOM OF METADATA
 });
