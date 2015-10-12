@@ -574,9 +574,6 @@
         "phonegap-plugin-barcodescanner": {
             "PACKAGE_NAME": "com.classdiary.checkin"
         },
-        "cordova-plugin-console": {
-            "PACKAGE_NAME": "com.classdiary.checkin"
-        },
         "cordova-plugin-geolocation": {
             "PACKAGE_NAME": "com.classdiary.checkin"
         },

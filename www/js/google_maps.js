@@ -1,5 +1,4 @@
-//Chave API Google Maps ANDROID: AIzaSyAkXpngIl57IBJUUwyOakf4_JrWAUJftrA
-//Chave API Google Maps IOS: AIzaSyC8nfflRJxa6rfYGrVhkZi7zFIcvQHZmOk
+
 var app = {
     // Application Constructor
     initialize: function() {
