@@ -22,11 +22,25 @@ function scan()
    );
 }
 
+function alertConfirmed() {
+    navigator.app.exitApp();
+}
+
 function onConfirm(buttonIndex) {
     if(buttonIndex == 1) {
-         alert('Registro de Presença cancelado!');
+        navigator.notification.alert(
+            'Registro de presença cancelado!',
+            null,
+            'Falha na confirmação da presença',
+            'OK'
+        );
     }
     if(buttonIndex == 2) {
-        alert('Presença confirmada com Sucesso!');
+        navigator.notification.alert(
+            'Sua presença foi confirmada com sucesso',
+            alertConfirmed,
+            'Presença confirmada',
+            'OK'
+        );
     }
 }
