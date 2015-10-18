@@ -5,7 +5,7 @@ $( document ).on( "pagebeforeshow", "#pagecheckin", function() {
     //distancia ate a imed
     var imed = defaultLatLng
     var pf = new google.maps.LatLng(-28.2611628, -52.4083349); //Passo Fundo
-    console.log(calcDistance(imed, pf));
+    //console.log(calcDistance(imed, pf));
     function calcDistance(imed, pf) {
       return (google.maps.geometry.spherical.computeDistanceBetween(imed, pf) / 1000).toFixed(2);
     }
@@ -43,7 +43,7 @@ $( document ).on( "pagebeforeshow", "#pagecheckin", function() {
         var marker = new google.maps.Marker({
             position: latlng,
             map: map,
-            title: "Sucesso!"
+            title: "Localizado!"
         });
     }
 });

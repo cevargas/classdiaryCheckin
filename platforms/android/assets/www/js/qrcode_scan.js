@@ -7,9 +7,12 @@ function scan()
             {
                 if(result.format == "QR_CODE")
                 {
+                    //alert(result.text);
                     navigator.notification.confirm(
                         'Deseja confirmar sua presença?',
-                         onConfirm,
+                        function(buttonIndex){
+                             onConfirm(buttonIndex, result.text);
+                        },
                         'Confirmação',
                         ['Cancelar', 'Confirmar']
                     );
@@ -22,25 +25,72 @@ function scan()
    );
 }
 
-function alertConfirmed() {
+function closeApp() {
     navigator.app.exitApp();
 }
 
-function onConfirm(buttonIndex) {
+function alertFail(mensagem){
+    navigator.notification.alert(
+        mensagem,
+        closeApp,
+        'Falha na confirmação [ Dados inválidos ]',
+        'OK'
+    );
+}
+
+function alertCancel(){
+    navigator.notification.alert(
+        'Registro de presença cancelado!',
+        closeApp,
+        'Falha na confirmação da presença',
+        'OK'
+    );
+}
+
+function alertSuccess(mensagem){
+    navigator.notification.alert(
+       mensagem,
+       closeApp,
+       'Presença confirmada',
+       'OK'
+    );
+}
+
+function onConfirm(buttonIndex, params) {
+
     if(buttonIndex == 1) {
-        navigator.notification.alert(
-            'Registro de presença cancelado!',
-            null,
-            'Falha na confirmação da presença',
-            'OK'
-        );
+        alertCancel();
     }
     if(buttonIndex == 2) {
-        navigator.notification.alert(
-            'Sua presença foi confirmada com sucesso',
-            alertConfirmed,
-            'Presença confirmada',
-            'OK'
-        );
+
+        //pega os dados do QRCode para fazer requisicao de registro da presenca
+        //chave armazenada
+        var chave;
+        if(localStorage.getItem("Key").length) {
+            chave = localStorage.getItem("Key");
+        }
+        if(!chave) {
+            alertFail('Não foi possível confirmar sua presença.');
+        }
+        else {
+
+            //url http://localhost:8080/classdiary/api/aluno/setarPresenca
+            var param = params.split(';');
+            var turma = param[0].split('=');
+            var disciplina = param[1].split('=');
+
+            $.post('http://192.168.1.110:8080/classdiary/api/aluno/setarPresenca',
+                { chave: chave, turmaId: turma[1], disciplinaId: disciplina[1] },
+                function (responseData) {
+                    var response = $.parseJSON(responseData);
+
+                    if(response.sucesso == true) {
+                        alertSuccess(response.descricao);
+                    }
+                    else {
+                        alertFail(response.descricao);
+                    }
+            });
+        }
     }
 }
