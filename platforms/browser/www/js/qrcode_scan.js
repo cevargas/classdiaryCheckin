@@ -41,7 +41,7 @@ function alertFail(mensagem){
 function alertCancel(){
     navigator.notification.alert(
         'Registro de presença cancelado!',
-        closeApp,
+        null,
         'Falha na confirmação da presença',
         'OK'
     );
@@ -62,27 +62,25 @@ function onConfirm(buttonIndex, params) {
         alertCancel();
     }
     if(buttonIndex == 2) {
-
         //pega os dados do QRCode para fazer requisicao de registro da presenca
         //chave armazenada
         var chave;
-        if(localStorage.getItem("Key").length) {
+        if(localStorage.getItem("Key")) {
             chave = localStorage.getItem("Key");
         }
         if(!chave) {
             alertFail('Não foi possível confirmar sua presença.');
         }
         else {
-
-            //url http://localhost:8080/classdiary/api/aluno/setarPresenca
             var param = params.split(';');
             var turma = param[0].split('=');
             var disciplina = param[1].split('=');
 
-            $.post('http://192.168.1.110:8080/classdiary/api/aluno/setarPresenca',
+            $.post('http://192.168.0.102/setarPresenca.php',
                 { chave: chave, turmaId: turma[1], disciplinaId: disciplina[1] },
                 function (responseData) {
                     var response = $.parseJSON(responseData);
+                    //var response = responseData;
 
                     if(response.sucesso == true) {
                         alertSuccess(response.descricao);

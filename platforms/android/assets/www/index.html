@@ -55,16 +55,12 @@
             <div data-role="header">
                 <h1>ClassDiary Check-in</h1>
                 <div data-role="controlgroup" data-type="horizontal" data-mini="true" class="ui-btn-right">
-                    <a href="#" onclick="exit();" class="ui-btn ui-corner-all ui-shadow ui-icon-gear ui-btn-icon-left">Sair</a>
+                    <a href="#" onclick="logout();" class="ui-btn ui-corner-all ui-shadow ui-icon-gear ui-btn-icon-left">Sair</a>
                 </div>
             </div>
             <div class="ui-content" role="main">
                 <div data-html="true">
-                    <!--
-                    http://192.168.0.102/form.php
-                    192.168.1.110:8080 -->
-
-                    <form id="form_login" data-ajax="false" action="http://192.168.1.110:8080/classdiary/api/aluno/validarMatricula">
+                    <form id="form_login" data-ajax="false" action="http://192.168.0.102/form.php">
                         <div data-html="true">
                             <label for="matricula">Matrícula:</label>
                             <input type="text" name="matricula" id="matricula" value="">
@@ -85,7 +81,7 @@
                 <h1>Check-in</h1>
                 <div data-role="controlgroup" data-type="horizontal" data-mini="true" class="ui-btn-right">
                       <a href="#" onclick="register();" class="ui-btn ui-corner-all ui-shadow ui-icon-check ui-btn-icon-left">Registrar</a>
-                      <a href="#" onclick="exit();" class="ui-btn ui-corner-all ui-shadow ui-icon-gear ui-btn-icon-left">Sair</a>
+                      <a href="#" onclick="logout();" class="ui-btn ui-corner-all ui-shadow ui-icon-gear ui-btn-icon-left">Sair</a>
                 </div>
             </div>
             <div role="main" class="ui-content">
@@ -100,7 +96,7 @@
             <div data-role="header">
                 <h1>Sem conexão</h1>
                 <div data-role="controlgroup" data-type="horizontal" data-mini="true" class="ui-btn-right">
-                      <a href="#" onclick="exit();" class="ui-btn ui-corner-all ui-shadow ui-icon-gear ui-btn-icon-left">Sair</a>
+                      <a href="#" onclick="logout();" class="ui-btn ui-corner-all ui-shadow ui-icon-gear ui-btn-icon-left">Sair</a>
                 </div>
             </div>
             <div role="main" class="ui-content">
@@ -116,7 +112,7 @@
                 <h1>Localização inválida</h1>
                 <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-icon-back ui-btn-icon-notext">Voltar</a>
                 <div data-role="controlgroup" data-type="horizontal" data-mini="true" class="ui-btn-right">
-                    <a href="#" onclick="exit();" class="ui-btn ui-corner-all ui-shadow ui-icon-gear ui-btn-icon-left">Sair</a>
+                    <a href="#" onclick="logout();" class="ui-btn ui-corner-all ui-shadow ui-icon-gear ui-btn-icon-left">Sair</a>
                 </div>
             </div>
             <div role="main" class="ui-content">
@@ -161,8 +157,7 @@
                 }
                 else {
                     //verifica se tem a key do usuario, se tiver, chama a pagina de checkin
-                    //alert(localStorage.getItem("Key"));
-                    if(localStorage.getItem("Key").length) {
+                    if(localStorage.getItem("Key")) {
                         $.mobile.navigate( "#pagecheckin", { transition : "slide" });
                     }
                     else {
@@ -178,6 +173,7 @@
 
                 $.post($this.attr('action'), $this.serialize(), function (responseData) {
                     var response = $.parseJSON(responseData);
+                    //var response = responseData;
 
                     if(response.sucesso == false) {
                         navigator.notification.alert(
@@ -203,7 +199,10 @@
             }
 
             //fecha o aplicativo
-            function exit() {
+            function logout() {
+                if(localStorage.getItem("Key")) {
+                    localStorage.clear();
+                }
                 navigator.app.exitApp();
             }
 
